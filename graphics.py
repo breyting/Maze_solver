@@ -60,6 +60,8 @@ class Cell:
         self._win = win
 
     def draw(self,x1, y1, x2, y2):
+        if self._win is None:
+            return
         self._x1 = x1
         self._y1 = y1
         self._x2 = x2
@@ -80,3 +82,18 @@ class Cell:
             wall = Line(Point(self._x1, self._y2), Point(self._x2, self._y2))
             self._win.draw_line(wall)
         
+    def draw_move(self, to_cell, undo=False):
+        color = "red"
+        if undo:
+            color = "gray"
+
+        self_center_x = self._x1 + ((self._x2 - self._x1) // 2)
+        self_center_y = self._y1 + ((self._y2 - self._y1) // 2)
+        
+        to_cell_center_x = to_cell._x1 + ((to_cell._x2 - to_cell._x1) // 2)
+        to_cell_center_y = to_cell._y1 + ((to_cell._y2 - to_cell._y1) // 2)
+
+        move = Line(Point(self_center_x, self_center_y), Point(to_cell_center_x, to_cell_center_y))
+
+        self._win.draw_line(move, color)
+
